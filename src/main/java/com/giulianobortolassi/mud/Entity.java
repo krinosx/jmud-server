@@ -67,6 +67,11 @@ public class Entity {
         return sex;
     }
 
+    /** Check the input from entity and return a command
+     * 
+     * TODO: Is it a good idea to refactor and find the command object here?
+     *  
+     */
 	public String getCurrentCommand() {
         if( this.connection != null ){
             String input = this.connection.getInput();

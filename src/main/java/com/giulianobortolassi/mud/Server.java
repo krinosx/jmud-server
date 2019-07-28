@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import com.giulianobortolassi.mud.commands.CommandParser;
+import com.giulianobortolassi.mud.protocol.TelnetProtocolAdapter;
 import com.giulianobortolassi.mud.systems.weather.WeatherControll;
 
 /**
@@ -30,13 +31,13 @@ public final class Server implements ConnectionListener {
     WeatherControll weather = new WeatherControll();
 
 
-
     long pulseCounter = 0;
 
     /**
      * Instantiate a new Server.
      */
     private Server() {
+        Log.debugEnabled = true;
     }
 
     /**
@@ -62,7 +63,7 @@ public final class Server implements ConnectionListener {
 
 
         // TODO: Load and init systems (AI, etc etc)
-        NetworkManager networkManager = new NetworkManager();
+        NetworkManager networkManager = new NetworkManager( new TelnetProtocolAdapter() );
         gameServer.setNetworkManager(networkManager);
         networkManager.addConnectionListener(gameServer);
         networkManager.init();
@@ -100,8 +101,8 @@ public final class Server implements ConnectionListener {
                 String command = gameObj.getCurrentCommand();
                 if (command != null) {
                     try{ 
-                    commandParser.parseCommand(gameObj, command, this);
-                    Log.info("Parsing Command: " + command, Server.class);
+                       commandParser.parseCommand(gameObj, command, this);
+                        Log.debug("Parsing Command: " + command, Server.class);
                     } catch( Exception e ){
                         Log.error("Error parsing command: " + command + " Err: " + e.getMessage(), Server.class);
                         gameObj.addResponse(" Hum? Ah! No no no... \r\n");
@@ -138,7 +139,7 @@ public final class Server implements ConnectionListener {
         // debug purpose only
         cycleCount++;
         if (cycleCount % 50 == 0) {
-            Log.info("running. MS: " + cycleTimeMedia, Server.class);
+            Log.debug("running. MS: " + cycleTimeMedia, Server.class);
             cycleCount = 0;
         }
 

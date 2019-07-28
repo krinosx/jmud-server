@@ -23,11 +23,7 @@ public class CommandParser {
     }
     
     public void parseCommand(Entity entity, String command, Server server){
-
-
-        // Remove the \r\n from command;
-        command = command.substring(0, command.length()-2);
-
+        
         if( !commands.containsKey(command) ) {
             entity.addResponse("Hun?");
             return;

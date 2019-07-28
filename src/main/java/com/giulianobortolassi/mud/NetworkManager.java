@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.giulianobortolassi.mud.protocol.ProtocolAdapter;
+
 /**
  * NetworkManager
  */
@@ -21,6 +23,7 @@ public class NetworkManager {
     private ArrayList<Connection> connectionList = new ArrayList<>();
     private ArrayList<ConnectionListener> listeners = new ArrayList<>();
 
+    private ProtocolAdapter protocolAdapter;
 
     // Configuration
     /** Port number to lister for new connections - Default 4444 */
@@ -30,8 +33,8 @@ public class NetworkManager {
 
     private static int idgenerator = 0;
 
-    public NetworkManager(){
-    
+    public NetworkManager(ProtocolAdapter protocolAdapter){
+        this.protocolAdapter = protocolAdapter;
     }
 
     public NetworkManager(String bindAddress, Integer port){
@@ -107,7 +110,7 @@ public class NetworkManager {
 
                 /* Le inputs pendentes */
                 if (key.isReadable()) {
-                    readCommand( key );
+                    proccessInput( key );
                 }
 
                 iterator.remove();
@@ -117,7 +120,7 @@ public class NetworkManager {
     }
     
 
-    private  void register(Selector selector, ServerSocketChannel channel) throws IOException {
+    private void register(Selector selector, ServerSocketChannel channel) throws IOException {
         SocketChannel client = channel.accept();
         Connection conn = new Connection(++idgenerator, client);
 
@@ -133,9 +136,9 @@ public class NetworkManager {
 
     }
 
-    private static void readCommand(SelectionKey key) throws IOException {
+    private void proccessInput(SelectionKey key) throws IOException {
         Connection con = (Connection) key.attachment();        
-        con.readData();
+        con.readData(this.protocolAdapter);
     }
     
 

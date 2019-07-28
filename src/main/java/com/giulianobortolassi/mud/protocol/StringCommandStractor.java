@@ -1,7 +1,9 @@
 
-package com.giulianobortolassi.mud;
+package com.giulianobortolassi.mud.protocol;
 
 import java.nio.ByteBuffer;
+
+import com.giulianobortolassi.mud.CommandExtractor;
 
 /**
  * StringCommandStractor

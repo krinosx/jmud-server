@@ -4,7 +4,9 @@ package com.giulianobortolassi.mud;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.LinkedList;
+
+import com.giulianobortolassi.mud.protocol.ProtocolAdapter;
+import com.giulianobortolassi.mud.protocol.TelnetCommandExtractor;
 
 /**
  * Connection
@@ -26,7 +28,7 @@ public class Connection {
 
         this.inBuffer = ByteBuffer.allocate(MAX_BUFFER_SIZE);
         this.outBuffer = ByteBuffer.allocate(MAX_BUFFER_SIZE);
-        this.extractor = new StringCommandStractor();
+        this.extractor = new TelnetCommandExtractor( );
     }
 
     /**
@@ -36,31 +38,36 @@ public class Connection {
         return id;
     }
 
-    public void readData() throws IOException {
+    public void readData(ProtocolAdapter adapter) throws IOException {
         this.inBuffer.clear();
         int read = this.socket.read(this.inBuffer);
         if( read == -1){
             this.socket.close();
         }
+        this.inBuffer.flip();
+        // Check the buffer for protocul specific input
+        adapter.handleInput(this.inBuffer, this.socket);
+
+
     }
   
     public String getInput(){
         return this.getInput(this.extractor);
     }
 
+    /**
+     * Parse the input buffer and extract a command string.
+     * 
+     * @param extractor
+     * @return
+     */
     public String getInput(CommandExtractor<String> extractor){
         String command = null;
         this.inBuffer.flip();
 
         // Check telnet specific commands
-        if( this.inBuffer.hasRemaining()) {
-            
-            byte[] array = inBuffer.array();
-            if( array[0] == -1 && array[1] == -12){
-                command = "Control-C";
-            } else {
-                command = extractor.extract(this.inBuffer);        
-            }
+        if( this.inBuffer.hasRemaining()) { 
+            command = extractor.extract(this.inBuffer);        
         }
         
         this.inBuffer.clear();
