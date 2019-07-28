@@ -89,23 +89,31 @@ public class Connection {
 
     }
 
-    public void sendData() throws IOException {
+    /**
+     * Get the pending data from outbuffer and send to socket.
+     * From this point no more data may be written into the buffer from the
+     * game. So we start with the buffer.flip() function.
+     * @param adapter
+     * @throws IOException
+     */
+    public void sendData(ProtocolAdapter adapter) throws IOException {
         // We have data to send
-        if( this.outBuffer.position() > 0 ) {
-            this.outBuffer.flip();
-
+        this.outBuffer.flip();
+        if( this.outBuffer.hasRemaining() ) {            
+            if( adapter != null ){
+                adapter.handleOutput(this.outBuffer, this.socket);
+            }
             int limit = this.outBuffer.limit();
-            int writtenBytes = this.socket.write(outBuffer);
+            this.outBuffer.rewind();
+            int writtenBytes = this.socket.write(this.outBuffer);
 
             if( limit > writtenBytes){
                 // Not all bytes were wrintten...
                 // Adjust buffer properties to send the rest of data on next pulse
                 Log.error("sendData(): Not all bytes sent!!", this.getClass());
-            } else {
-                // All data was sent, so clear the buffer.
-                this.outBuffer.clear();
-            }
+            } 
         }
+        this.outBuffer.clear();
 
     }
 
@@ -113,7 +121,7 @@ public class Connection {
     public void disconnect(){
         try {
             // flush all pending data
-            sendData();
+            sendData(null);
 
             // disconnect
             this.socket.close();

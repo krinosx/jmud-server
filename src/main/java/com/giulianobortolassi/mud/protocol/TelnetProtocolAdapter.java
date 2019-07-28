@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import com.giulianobortolassi.mud.Color;
 import com.giulianobortolassi.mud.Log;
 
 /**
@@ -86,10 +87,101 @@ public class TelnetProtocolAdapter implements ProtocolAdapter {
         content == Telnet.TELOPT_TM;
     }
 
-    @Override
-	public void handleOutput(ByteBuffer inBuffer, SocketChannel socket) {
-		
-	}
 
+    byte escapeColor   = (byte)'&';
+    byte escapeColorFg = (byte)'f';
+    byte escapeColorBg = (byte)'b';
     
+    
+
+    @Override
+	public void handleOutput(ByteBuffer outBuffer, SocketChannel socket) {
+        
+        // Check for color codes and replace with telnet escape code.
+
+        /* First, count all mud color escape chars (&f* or &b*). Each code
+           will be replaced by a 10 position telnet escape char (\x1B[*;**m)
+           We must check the buffer size, for each code we must add 7 bytes
+           to the buffer.
+
+            int colorCodeCount = Total of mud color symbols in output.
+
+            int new bufferSize = currentSize + (7 * colorCodeCount)
+        */
+        outBuffer.rewind();
+
+        int colorCodeCount = 0;
+        while( outBuffer.hasRemaining() ) {
+            byte currPosition = outBuffer.get();
+            if( currPosition == escapeColor ) {
+                byte fgbg = outBuffer.hasRemaining() ? outBuffer.get() : 0;
+                if(  fgbg == escapeColorFg || fgbg == escapeColorBg ) {
+                    // we found a escape color sequence. Get the color especification and sum the colorCodeCount
+                    byte colorCode = outBuffer.hasRemaining() ? outBuffer.get() : 0; // we do that to move the buffer pointer
+                    colorCodeCount++;
+                }  
+            }
+        }
+
+        if( colorCodeCount > 0 ) {
+
+            int currenSize = outBuffer.limit();
+            int capacity = outBuffer.capacity(); // maxBufferCapacity
+
+            int newDesiredCapacity = currenSize + (7*colorCodeCount);
+
+            if( newDesiredCapacity > capacity ) {
+                // Buffer overflow.
+            }
+
+
+            ByteBuffer tempBuffer = ByteBuffer.allocate(newDesiredCapacity);
+            // once the tmpBuffer is allocated, its already in resset state;
+            
+            // We must rewind the outBuffer
+            outBuffer.rewind();
+            while( outBuffer.hasRemaining() ) {
+                byte copyPosition = outBuffer.get();
+                if( copyPosition == escapeColor ) {
+                    byte fgbg = outBuffer.hasRemaining() ? outBuffer.get() : 0;
+                    if( fgbg == escapeColorFg || fgbg == escapeColorBg ) {
+                        // we found a escape color sequence. Get the color especification and sum the colorCodeCount
+                        byte colorCode = outBuffer.hasRemaining() ? outBuffer.get() : null; // we do that to move the buffer pointer
+                        // find the code in enum
+                        byte[] colorCodeBytes = new byte[3];
+                        colorCodeBytes[0] = (byte)'&';
+                        colorCodeBytes[1] = fgbg;
+                        colorCodeBytes[2] = colorCode;
+
+                        String colorCodeString = new String(colorCodeBytes);
+                        Color color = Color.findByCode( colorCodeString );
+
+                        if( color != null ) {
+                            tempBuffer.put(color.getTelnetCode());
+                        } else {
+                            // Did not ind the color. Just put the escape chars
+                            tempBuffer.put(colorCodeBytes);
+                        }
+                    } else {
+                        tempBuffer.put(copyPosition);
+                        if( fgbg != 0 ) {
+                            tempBuffer.put(fgbg);
+                        }
+                    }
+                } else {
+                    tempBuffer.put(copyPosition);
+                }
+                  
+            }
+            // We finisehd to write. Flip the buffer
+            tempBuffer.flip();
+
+            // Replace the outputBuffer content with the replaced version
+            outBuffer.clear();
+
+            outBuffer.put(tempBuffer);
+            // We finished to write. So flip() the buffer;
+            outBuffer.flip();
+        }
+	}    
 }

@@ -169,7 +169,6 @@ public class NetworkManager {
     }
 
 	public void handleSocktOutput() {
-    
         Iterator<SelectionKey> keysIterator = selector.keys().iterator();
         while(keysIterator.hasNext()){
             SelectionKey key = keysIterator.next();
@@ -178,8 +177,9 @@ public class NetworkManager {
                 if( attach != null ) {
                     Connection conn = (Connection)attach;
                     try{
-                       
-                        conn.sendData();
+                       // From this point no new data may be put into buffer from the game.
+                       // Flip it.
+                        conn.sendData(protocolAdapter);
 
                     } catch( IOException e ){
                         Log.error("handleSocketOutput() -> Erro to send data! ConnectionID: " + conn.getId() + ". closing.", NetworkManager.class);

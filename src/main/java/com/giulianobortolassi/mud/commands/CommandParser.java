@@ -25,14 +25,14 @@ public class CommandParser {
     public void parseCommand(Entity entity, String command, Server server){
         
         if( !commands.containsKey(command) ) {
-            entity.addResponse("Hun?");
+            entity.addResponse("&fr Hun? &fn \r\n");
             return;
         } 
 
         MudCommand commandRef = commands.get(command);
 
         if( !commandRef.checkRequirements(entity) ){
-            entity.addResponse("Ein?");
+            entity.addResponse("&fr Ein? &fn \r\n");
             return;
         }
 

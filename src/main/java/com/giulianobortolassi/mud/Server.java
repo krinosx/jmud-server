@@ -101,7 +101,7 @@ public final class Server implements ConnectionListener {
                 String command = gameObj.getCurrentCommand();
                 if (command != null) {
                     try{ 
-                       commandParser.parseCommand(gameObj, command, this);
+                        commandParser.parseCommand(gameObj, command, this);
                         Log.debug("Parsing Command: " + command, Server.class);
                     } catch( Exception e ){
                         Log.error("Error parsing command: " + command + " Err: " + e.getMessage(), Server.class);

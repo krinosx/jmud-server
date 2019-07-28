@@ -27,7 +27,7 @@ public class WhoCommand implements MudCommand {
         List<Entity> gameObjects = server.getGameObjects();
 
         StringBuffer output = new StringBuffer();
-        output.append(" --- Players Online: ------ \r\n"); 
+        output.append(" --- &fG Players Online: &fn ------ \r\n"); 
         output.append(" Name \t Level \r\n ");
         Iterator<Entity> objectsIterator = gameObjects.iterator();
         int totalOnline = 0;
