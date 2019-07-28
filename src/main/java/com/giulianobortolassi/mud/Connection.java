@@ -13,7 +13,7 @@ import com.giulianobortolassi.mud.protocol.TelnetCommandExtractor;
  */
 public class Connection {
 
-    public static int MAX_BUFFER_SIZE = 1024;
+    public static int MAX_BUFFER_SIZE = 1024 * 65; // 65K max buffer
 
     private Integer id;
     private SocketChannel socket;

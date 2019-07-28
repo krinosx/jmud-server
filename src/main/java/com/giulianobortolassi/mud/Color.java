@@ -11,19 +11,87 @@ public enum Color {
     RESET("text_reset","&tn", "[0;0m"), 
     FG_RESET("fg_reset", "&fn", "[0m"), 
     
-    FG_BLACK("fg_black","&fb","[0;30m"),
+    FG_BLACK("fg_dark_black","&fK","[30m"),
+    FG_LIGHT_BLACK("fg_light_black","&fk","[90m"),
+    
     // Red
-    FG_DARK_RED("fg_dark_red", "&fR","[0;31m"),
-    FG_LIGHT_RED("fg_light_red", "&fr","[1;31m"),
+    FG_DARK_RED("fg_dark_red", "&fR","[31m"),
+    FG_LIGHT_RED("fg_light_red", "&fr","[91m"),
+
     // Green
-    FG_DARK_GREEN("fg_dark_green", "&fG","[0;32m"),
-    FG_LIGHT_GREEN("fg_light_green", "&fg","[1;32m"),
-    // Blue
-    FG_DARK_BLUE("fg_dark_blue", "&fB","[0;34m"),
-    FG_LIGHT_BLUE("fg_light_blue", "&fb","[1;34m"),
+    FG_DARK_GREEN("fg_dark_green", "&fG","[32m"),
+    FG_LIGHT_GREEN("fg_light_green", "&fg","[92m"),
+    
+    // Green
+    FG_DARK_YELLOW("fg_dark_yellow", "&fY","[33m"),
+    FG_LIGHT_YELLOW("fg_light_yellow", "&fy","[93m"),
+    
+    // Green
+    FG_DARK_BLUE("fg_dark_blue", "&fB","[34m"),
+    FG_LIGHT_BLUE("fg_light_blue", "&fb","[94m"),
+        
+    // Magenta
+    FG_DARK_MAGENTA("fg_dark_magenta", "&fM","[35m"),
+    FG_LIGHT_MAGENTA("fg_light_magenta", "&fm","[95m"),
+    
+    // Cyan
+    FG_DARK_CYAN("fg_dark_cyan", "&fC","[36m"),
+    FG_LIGHT_CYAN("fg_light_cyan", "&fc","[96m"), // bold
+    
     // White
-    FG_DARK_WHITE("fg_dark_white", "&fW","[0;37m"),
-    FG_LIGHT_WHITE("fg_light_white", "&fw","[1;37m");   
+    FG_DARK_WHITE("fg_dark_white", "&fW","[37m"),
+    FG_LIGHT_WHITE("fg_light_white", "&fw","[97m"),
+
+    /* BACKGROUND COLORS */
+    
+    BG_DARK_BLACK("bg_dark_black","&bK","[40m"),
+    BG_LIGHT_BLACK("bg_light_black","&bk","[100m"),
+    
+    // Red
+    BG_DARK_RED("bg_dark_red", "&bR","[41m"),
+    BG_LIGHT_RED("bg_light_red", "&br","[101m"),
+
+    // Green
+    BG_DARK_GREEN("bg_dark_green", "&bG","[42m"),
+    BG_LIGHT_GREEN("bg_light_green", "&bg","[102m"),
+    
+    // Green
+    BG_DARK_YELLOW("bg_dark_yellow", "&bY","[43m"),
+    BG_LIGHT_YELLOW("bg_light_yellow", "&by","[103m"),
+    
+    // Green
+    BG_DARK_BLUE("bg_dark_blue", "&bB","[44m"),
+    BG_LIGHT_BLUE("bg_light_blue", "&bb","[104m"),
+        
+    // Magenta
+    BG_DARK_MAGENTA("bg_dark_magenta", "&bM","[45m"),
+    BG_LIGHT_MAGENTA("bg_light_magenta", "&bm","[105m"),
+    
+    // Cyan
+    BG_DARK_CYAN("bg_dark_cyan", "&bC","[46m"),
+    BG_LIGHT_CYAN("bg_light_cyan", "&bc","[106m"), // bold
+    
+    // White
+    BG_DARK_WHITE("bg_dark_white", "&bW","[47m"),
+    BG_LIGHT_WHITE("bg_light_white", "&bw","[107m"),
+
+
+
+    
+    // Extras
+    EX_FLASH("ex_flash", "&ef","[1;5;37m"),
+    EX_UNDERLINE("ex_underline", "&eu","[4m"),
+    EX_INVERSE("ex_inverse", "&ei","[7m"),
+    EX_BOLD("ex_bold", "&eb","[1m"),
+
+
+
+    FG_EXPERIMENTAL("fg_exp", "&f0", "[38;5;207m"),
+    FG_EXPERIMENTAL_2("fg_exp", "&f1", "[7m"),
+    FG_EXPERIMENTAL_3("fg_exp", "&f2", "[11m")
+
+    
+    ;   
 
     private String name;
     private String symbol;
@@ -47,15 +115,53 @@ public enum Color {
     static {
         symbolIndex.put(RESET.symbol, RESET);
         symbolIndex.put(FG_RESET.symbol, FG_RESET);
+        // FG COLORS
         symbolIndex.put(FG_BLACK.symbol, FG_BLACK);
+        symbolIndex.put(FG_LIGHT_BLACK.symbol, FG_BLACK);
         symbolIndex.put(FG_DARK_RED.symbol, FG_DARK_RED);
         symbolIndex.put(FG_LIGHT_RED.symbol, FG_LIGHT_RED);
         symbolIndex.put(FG_DARK_GREEN.symbol, FG_DARK_GREEN);
         symbolIndex.put(FG_LIGHT_GREEN.symbol, FG_LIGHT_GREEN);
+        symbolIndex.put(FG_DARK_YELLOW.symbol, FG_DARK_YELLOW);
+        symbolIndex.put(FG_LIGHT_YELLOW.symbol, FG_LIGHT_YELLOW);
         symbolIndex.put(FG_DARK_BLUE.symbol, FG_DARK_BLUE);
         symbolIndex.put(FG_LIGHT_BLUE.symbol, FG_LIGHT_BLUE);
+        symbolIndex.put(FG_DARK_MAGENTA.symbol, FG_DARK_MAGENTA);
+        symbolIndex.put(FG_LIGHT_MAGENTA.symbol, FG_LIGHT_MAGENTA);
+        symbolIndex.put(FG_DARK_CYAN.symbol, FG_DARK_CYAN);
+        symbolIndex.put(FG_LIGHT_CYAN.symbol, FG_LIGHT_CYAN);
         symbolIndex.put(FG_DARK_WHITE.symbol, FG_DARK_WHITE);
         symbolIndex.put(FG_LIGHT_WHITE.symbol, FG_LIGHT_WHITE);
+        // BG COLORS
+        symbolIndex.put(BG_DARK_BLACK.symbol, BG_DARK_BLACK);
+        symbolIndex.put(BG_LIGHT_BLACK.symbol, BG_DARK_BLACK);
+        symbolIndex.put(BG_DARK_RED.symbol, BG_DARK_RED);
+        symbolIndex.put(BG_LIGHT_RED.symbol, BG_LIGHT_RED);
+        symbolIndex.put(BG_DARK_GREEN.symbol, BG_DARK_GREEN);
+        symbolIndex.put(BG_LIGHT_GREEN.symbol, BG_LIGHT_GREEN);
+        symbolIndex.put(BG_DARK_YELLOW.symbol, BG_DARK_YELLOW);
+        symbolIndex.put(BG_LIGHT_YELLOW.symbol, BG_LIGHT_YELLOW);
+        symbolIndex.put(BG_DARK_BLUE.symbol, BG_DARK_BLUE);
+        symbolIndex.put(BG_LIGHT_BLUE.symbol, BG_LIGHT_BLUE);
+        symbolIndex.put(BG_DARK_MAGENTA.symbol, BG_DARK_MAGENTA);
+        symbolIndex.put(BG_LIGHT_MAGENTA.symbol, BG_LIGHT_MAGENTA);
+        symbolIndex.put(BG_DARK_CYAN.symbol, BG_DARK_CYAN);
+        symbolIndex.put(BG_LIGHT_CYAN.symbol, BG_LIGHT_CYAN);
+        symbolIndex.put(BG_DARK_WHITE.symbol, BG_DARK_WHITE);
+        symbolIndex.put(BG_LIGHT_WHITE.symbol, BG_LIGHT_WHITE);        
+
+
+        // Extras
+        symbolIndex.put(EX_FLASH.symbol, EX_FLASH);
+        symbolIndex.put(EX_UNDERLINE.symbol, EX_UNDERLINE);        
+        symbolIndex.put(EX_INVERSE.symbol, EX_INVERSE);       
+        symbolIndex.put(EX_BOLD.symbol, EX_BOLD);
+        
+        // Experimental
+        symbolIndex.put(FG_EXPERIMENTAL.symbol, FG_EXPERIMENTAL);
+        symbolIndex.put(FG_EXPERIMENTAL_2.symbol, FG_EXPERIMENTAL_2);
+        symbolIndex.put(FG_EXPERIMENTAL_3.symbol, FG_EXPERIMENTAL_3);
+    
     }
 
     /**
@@ -88,58 +194,5 @@ public enum Color {
      */
     public String getColorDefinition() {
         return colorDefinition;
-    }
-
-    // TODO: Map all colors
-    // #define CNRM  "\x1B[0;0m"     /* "Normal"                            */ 
-    // #define CNUL  ""              /* No Change                           */ 
-    // #define KNRM  "\x1B[0m"       /* Foreground "Normal"                 */ 
-    // #define KBLK  "\x1b[0;30m"    /* Foreground Black                    */ 
-    // #define KRED  "\x1B[0;31m"    /* Foreground Dark Red                 */ 
-    // #define KGRN  "\x1B[0;32m"    /* Foreground Dark Green               */ 
-    // #define KYEL  "\x1B[0;33m"    /* Foreground Dark Yellow              */ 
-    // #define KBLU  "\x1B[0;34m"    /* Foreground Dark Blue                */ 
-    // #define KMAG  "\x1B[0;35m"    /* Foreground Dark Magenta             */ 
-    // #define KCYN  "\x1B[0;36m"    /* Foreground Dark Cyan                */ 
-    // #define KWHT  "\x1B[0;37m"    /* Foreground Dark White (Light Gray)  */ 
-    // #define KNUL  ""              /* Foreground No Change                */ 
-    // #define BBLK  "\x1B[1;30m"    /* Foreground Bright Black (Dark Gray) */ 
-    // #define BRED  "\x1B[1;31m"    /* Foreground Bright Red               */ 
-    // #define BGRN  "\x1B[1;32m"    /* Foreground Bright Green             */ 
-    // #define BYEL  "\x1B[1;33m"    /* Foreground Bright Yellow            */ 
-    // #define BBLU  "\x1B[1;34m"    /* Foreground Bright Blue              */ 
-    // #define BMAG  "\x1B[1;35m"    /* Foreground Bright Magenta           */ 
-    // #define BCYN  "\x1B[1;36m"    /* Foreground Bright Cyan              */ 
-    // #define BWHT  "\x1B[1;37m"    /* Foreground Bright White             */ 
-    
-    // #define BKBLK  "\x1B[40m"     /* Background Black                    */ 
-    // #define BKRED  "\x1B[41m"     /* Background Dark Red                 */ 
-    // #define BKGRN  "\x1B[42m"     /* Background Dark Green               */ 
-    // #define BKYEL  "\x1B[43m"     /* Background Dark Yellow              */ 
-    // #define BKBLU  "\x1B[44m"     /* Background Dark Blue                */ 
-    // #define BKMAG  "\x1B[45m"     /* Background Dark Magenta             */ 
-    // #define BKCYN  "\x1B[46m"     /* Background Dark Cyan                */ 
-    // #define BKWHT  "\x1B[47m"     /* Background Dark White (Light Gray)  */ 
-    
-    // #define FBLK  "\x1B[5;30m"    /* Foreground Flashing Black (silly)   */ 
-    // #define FRED  "\x1B[5;31m"    /* Foreground Flashing Dark Red        */ 
-    // #define FGRN  "\x1B[5;32m"    /* Foreground Flashing Dark Green      */ 
-    // #define FYEL  "\x1B[5;33m"    /* Foreground Flashing Dark Yellow     */ 
-    // #define FBLU  "\x1B[5;34m"    /* Foreground Flashing Dark Blue       */ 
-    // #define FMAG  "\x1B[5;35m"    /* Foreground Flashing Dark Magenta    */ 
-    // #define FCYN  "\x1B[5;36m"    /* Foreground Flashing Dark Cyan       */ 
-    // #define FWHT  "\x1B[5;37m"    /* Foreground Flashing Light Gray      */ 
-    
-    // #define BFBLK  "\x1B[1;5;30m" /* Foreground Flashing Dark Gray       */ 
-    // #define BFRED  "\x1B[1;5;31m" /* Foreground Flashing Bright Red      */ 
-    // #define BFGRN  "\x1B[1;5;32m" /* Foreground Flashing Bright Green    */ 
-    // #define BFYEL  "\x1B[1;5;33m" /* Foreground Flashing Bright Yellow   */ 
-    // #define BFBLU  "\x1B[1;5;34m" /* Foreground Flashing Bright Blue     */ 
-    // #define BFMAG  "\x1B[1;5;35m" /* Foreground Flashing Bright Magenta  */ 
-    // #define BFCYN  "\x1B[1;5;36m" /* Foreground Flashing Bright Cyan     */ 
-    // #define BFWHT  "\x1B[1;5;37m" /* Foreground Flashing Bright White    */ 
-
-
-
-    
+    }   
 }

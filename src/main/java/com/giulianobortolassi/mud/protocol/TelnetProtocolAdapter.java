@@ -91,6 +91,8 @@ public class TelnetProtocolAdapter implements ProtocolAdapter {
     byte escapeColor   = (byte)'&';
     byte escapeColorFg = (byte)'f';
     byte escapeColorBg = (byte)'b';
+    byte escapeExtras  = (byte)'e';
+    
     
     
 
@@ -115,7 +117,7 @@ public class TelnetProtocolAdapter implements ProtocolAdapter {
             byte currPosition = outBuffer.get();
             if( currPosition == escapeColor ) {
                 byte fgbg = outBuffer.hasRemaining() ? outBuffer.get() : 0;
-                if(  fgbg == escapeColorFg || fgbg == escapeColorBg ) {
+                if(  fgbg == escapeColorFg || fgbg == escapeColorBg || fgbg == escapeExtras ) {
                     // we found a escape color sequence. Get the color especification and sum the colorCodeCount
                     byte colorCode = outBuffer.hasRemaining() ? outBuffer.get() : 0; // we do that to move the buffer pointer
                     colorCodeCount++;
@@ -144,7 +146,7 @@ public class TelnetProtocolAdapter implements ProtocolAdapter {
                 byte copyPosition = outBuffer.get();
                 if( copyPosition == escapeColor ) {
                     byte fgbg = outBuffer.hasRemaining() ? outBuffer.get() : 0;
-                    if( fgbg == escapeColorFg || fgbg == escapeColorBg ) {
+                    if( fgbg == escapeColorFg || fgbg == escapeColorBg || fgbg == escapeExtras ) {
                         // we found a escape color sequence. Get the color especification and sum the colorCodeCount
                         byte colorCode = outBuffer.hasRemaining() ? outBuffer.get() : null; // we do that to move the buffer pointer
                         // find the code in enum

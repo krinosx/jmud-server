@@ -19,6 +19,7 @@ public class CommandParser {
     public CommandParser(){
         commands.put("who", new WhoCommand());
         commands.put("quit", new QuitCommand());
+        commands.put("colortest", new TestColorCommand());
 
     }
     
